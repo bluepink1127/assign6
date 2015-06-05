@@ -15,13 +15,13 @@
   $(document).ready(function(){
      var current_user = Parse.User.current();
 
-     if(!currentUser){
+     if(!current_user){
       alert("你還沒登入呦@@先去登入吧");
       window.location = 'logIn.html';
       return null;
     }
-     var role = currentUser.get("role");
-     var username = currentUser.get("username");
+     var role = current_user.get("role");
+     var username = current_user.get("username");
 
       $("#name").text(username);
 
