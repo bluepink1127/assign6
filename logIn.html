@@ -9,10 +9,44 @@
   <link rel="stylesheet" href="css/css.css">
 
   <!--引入初始化 Parse 的 js 檔案-->
-  <script type="text/javascript" src="<!--引入初始化 Parse 的 js 檔案-->"></script>
+  <script type="text/javascript" src="js/key.js"></script>
   <script  type="text/javascript">
+
+     $(document).ready(function() {
+      var currentUser = Parse.User.current();
+      if (currentUser) {
+          Parse.User.logOut();
+          console.log('logout current', Parse.User.current());
+      }
+    });
+
+
     $(document).on('submit','#logInForm',function(e){
+      e.preventDefault();
       console.log('logIn submit');
+      var username = $('#username').val() ;
+      var password = $('#password').val() ;
+
+     
+      Parse.User.logIn( username , password , {
+      success: function(user) {
+        // 到 console 看看 Parse.User.current()  的東西
+        var current_User = Parse.User.current();
+        console.log(Parse.User.current()) ;
+        alert('登入成功嘿嘿嘿') ;
+        window.location = 'index.html' ;
+
+        var signclass = Parse.Object.extend("signclass");
+        var query = new Parse.Query(signclass);
+          query.equalTo("username", current_User.get("username"));
+      },
+
+      error: function(user, error) {
+        console.log(error) ;
+        alert(error.message);
+        }
+      });
+    //endof login
       /* 請閱讀完 html 後在這裡填入送出表單後需要執行的程式碼 */
         // 提示1 : 記得使用 preventDefault 方程 避免表單轉址
         // 提示2 : 請在使用者登入成功後，自動幫助使用者簽到，
